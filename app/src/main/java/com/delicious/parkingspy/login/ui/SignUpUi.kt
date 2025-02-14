@@ -1,8 +1,11 @@
 package com.delicious.parkingspy.login.ui
 
 import android.app.DatePickerDialog
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,15 +15,21 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.delicious.parkingspy.R
 import com.delicious.parkingspy.login.viewmodels.SignUpViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
+@Preview
 @Composable
 fun SignUpUi(viewModel: SignUpViewModel = viewModel()) {
     val signUpState = viewModel.state.collectAsState().value
@@ -38,8 +47,17 @@ fun SignUpUi(viewModel: SignUpViewModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
+        Image(
+            painter = painterResource(id = R.drawable.a_stylized_logo_for_an_app_called__parking_spy___t),
+            contentDescription = "Header Image",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+        )
         OutlinedTextField(
             value = signUpState.firstName,
             onValueChange = { viewModel.updateUserFirstName(it) },
@@ -69,9 +87,13 @@ fun SignUpUi(viewModel: SignUpViewModel = viewModel()) {
 
         Button(
             onClick = { datePickerDialog.show() },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Blue,
+                contentColor = Color.White
+            ),
         ) {
-            Text("Select Date of Birth: ${signUpState.dateOfBirth.format(dateFormatter)}")
+            Text("Select Date of Birth")
         }
 
     }

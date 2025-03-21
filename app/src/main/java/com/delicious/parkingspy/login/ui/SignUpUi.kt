@@ -14,28 +14,25 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.delicious.parkingspy.R
+import com.delicious.parkingspy.login.viewmodels.SignUpState
 import com.delicious.parkingspy.login.viewmodels.SignUpViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-@Preview
 @Composable
-fun SignUpUi(viewModel: SignUpViewModel = viewModel(),
+fun SignUpUi(viewModel: SignUpViewModel,
              navController: NavController = rememberNavController()
 ) {
-    val signUpState = viewModel.state.collectAsState().value
+    val signUpState = SignUpState()
     val context = LocalContext.current
     val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
     val datePickerDialog = DatePickerDialog(
@@ -63,7 +60,10 @@ fun SignUpUi(viewModel: SignUpViewModel = viewModel(),
         )
         OutlinedTextField(
             value = signUpState.firstName,
-            onValueChange = { viewModel.updateUserFirstName(it) },
+            onValueChange = { first ->
+                viewModel.updateUserFirstName(
+                first
+            ) },
             label = { Text("First Name") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -81,7 +81,9 @@ fun SignUpUi(viewModel: SignUpViewModel = viewModel(),
 
         OutlinedTextField(
             value = signUpState.email,
-            onValueChange = { viewModel.updateUserEmail(it) },
+            onValueChange = {
+                viewModel.updateUserEmail(it)
+                            },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -89,8 +91,10 @@ fun SignUpUi(viewModel: SignUpViewModel = viewModel(),
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = signUpState.email,
-            onValueChange = { viewModel.updateUserEmail(it) },
+            value = signUpState.userName,
+            onValueChange = { userName ->
+                viewModel.updateUserEmail(userName)
+                            },
             label = { Text("Choose UserName") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -98,8 +102,10 @@ fun SignUpUi(viewModel: SignUpViewModel = viewModel(),
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = signUpState.email,
-            onValueChange = { viewModel.updateUserEmail(it) },
+            value = signUpState.password,
+            onValueChange = { password ->
+                viewModel.updateUserEmail(password)
+                            },
             label = { Text("Choose Password") },
             modifier = Modifier.fillMaxWidth()
         )

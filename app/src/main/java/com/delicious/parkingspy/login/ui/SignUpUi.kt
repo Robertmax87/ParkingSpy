@@ -30,7 +30,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun SignUpUi(viewModel: SignUpViewModel,
-             navController: NavController = rememberNavController()
+             navController: NavController? = rememberNavController()
 ) {
     val signUpState = SignUpState()
     val context = LocalContext.current

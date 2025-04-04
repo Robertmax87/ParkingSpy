@@ -12,16 +12,21 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.delicious.parkingspy.login.viewmodels.SignInState
 import com.delicious.parkingspy.login.viewmodels.SignInViewModel
 
 @Composable
-fun SignInUi(viewModel: SignInViewModel) {
+fun SignInUi(viewModel: SignInViewModel,
+             navController: NavController
+) {
+    val signInUIData = viewModel.stateFlow.collectAsState(initial = SignInState())
     val signInState = SignInState()
     val context = LocalContext.current
     Column(
@@ -32,7 +37,7 @@ fun SignInUi(viewModel: SignInViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         OutlinedTextField(
-            value = signInState.email,
+            value = signInUIData.value.email,
             onValueChange = { email ->
                 viewModel.updateUserEmail(
                     email
@@ -44,7 +49,7 @@ fun SignInUi(viewModel: SignInViewModel) {
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = signInState.password,
+            value = signInUIData.value.password,
             onValueChange = { viewModel.updateUserPassword(it) },
             label = { Text("Last Name") },
             modifier = Modifier.fillMaxWidth()
@@ -53,7 +58,7 @@ fun SignInUi(viewModel: SignInViewModel) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Button(
-            onClick = { viewModel.validateUser(signInState.email, signInState.password) },
+            onClick = { viewModel.validateUser(signInUIData.value.email, signInUIData.value.password) },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Blue,

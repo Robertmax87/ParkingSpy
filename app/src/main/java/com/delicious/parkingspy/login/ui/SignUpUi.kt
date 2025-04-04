@@ -14,6 +14,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,9 +31,10 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun SignUpUi(viewModel: SignUpViewModel,
-             navController: NavController? = rememberNavController()
+             navController: NavController
 ) {
     val signUpState = SignUpState()
+    val signUpUIData = viewModel.stateFlow.collectAsState(initial = SignUpState())
     val context = LocalContext.current
     val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
     val datePickerDialog = DatePickerDialog(
@@ -40,9 +42,9 @@ fun SignUpUi(viewModel: SignUpViewModel,
         { _, year, month, dayOfMonth ->
             viewModel.updateDateOfBirth(LocalDate.of(year, month + 1, dayOfMonth))
         },
-        signUpState.dateOfBirth.year,
-        signUpState.dateOfBirth.monthValue - 1,
-        signUpState.dateOfBirth.dayOfMonth
+        signUpUIData.value.dateOfBirth.year,
+        signUpUIData.value.dateOfBirth.monthValue - 1,
+        signUpUIData.value.dateOfBirth.dayOfMonth
     )
     Column(
         modifier = Modifier
@@ -59,7 +61,7 @@ fun SignUpUi(viewModel: SignUpViewModel,
                 .height(200.dp)
         )
         OutlinedTextField(
-            value = signUpState.firstName,
+            value = signUpUIData.value.firstName,
             onValueChange = { first ->
                 viewModel.updateUserFirstName(
                 first
@@ -71,7 +73,7 @@ fun SignUpUi(viewModel: SignUpViewModel,
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = signUpState.lastName,
+            value = signUpUIData.value.lastName,
             onValueChange = { viewModel.updateUserLastName(it) },
             label = { Text("Last Name") },
             modifier = Modifier.fillMaxWidth()
@@ -80,7 +82,7 @@ fun SignUpUi(viewModel: SignUpViewModel,
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = signUpState.email,
+            value = signUpUIData.value.email,
             onValueChange = {
                 viewModel.updateUserEmail(it)
                             },
@@ -91,7 +93,7 @@ fun SignUpUi(viewModel: SignUpViewModel,
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = signUpState.userName,
+            value = signUpUIData.value.userName,
             onValueChange = { userName ->
                 viewModel.updateUserEmail(userName)
                             },
@@ -102,7 +104,7 @@ fun SignUpUi(viewModel: SignUpViewModel,
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = signUpState.password,
+            value = signUpUIData.value.password,
             onValueChange = { password ->
                 viewModel.updateUserEmail(password)
                             },

@@ -1,12 +1,7 @@
 package com.delicious.parkingspy.login.viewmodels
 
-import androidx.compose.runtime.Composable
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.airbnb.mvrx.MavericksState
 import com.airbnb.mvrx.MavericksViewModel
-import com.delicious.parkingspy.Nav.Screen
 import com.delicious.parkingspy.login.structs.SignUpBundle
 import java.time.LocalDate
 
@@ -16,7 +11,7 @@ data class SignUpState(
     val email: String = "",
     val dateOfBirth: LocalDate = LocalDate.now(),
     val password: String = "",
-    val userName: String = ""
+    val userName: String = "",
 ) : MavericksState
 
 
@@ -53,28 +48,11 @@ fun updateUserLastName(lastName: String) = setState {
     email: String,
     dob: LocalDate
     ): SignUpBundle {
-       return SignUpBundle(
+        return SignUpBundle(
             firstName = firstName,
-           lastName = lastName,
-           email = email,
-           dob = dob
+            lastName = lastName,
+            email = email,
+            dob = dob
         )
-    }
-
-    @Composable
-    fun navigateToSignIn() = withState{ state ->
-        val navController = rememberNavController()
-        bundleIntoSignUpData(
-           firstName =  state.firstName,
-            lastName = state.lastName,
-            email = state.email,
-            dob = state.dateOfBirth
-        )
-        //TODO: robert.maxwell 2025-03-21: Navigate to SignInScreen
-        NavHost(navController = navController, startDestination = Screen.SignUpScreen.router) {
-            composable(route = Screen.SignUpScreen.router) {
-
-            }
-        }
     }
 }
